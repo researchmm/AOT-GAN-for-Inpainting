@@ -90,7 +90,7 @@ Download the model dirs and put it under `experiments/`
 <!-- ------------------------------------------------------------------- -->
 ## Demo 
 
-1. Run by `python demo.py --dir_image [fold to images]  --pre_train [folder to model] --painter [bbox|freeform]`
+1. Run by `python demo.py --dir_image [folder to images]  --pre_train [folder to model] --painter [bbox|freeform]`
 2. Press '+' or '-' to control the thickness of painter. 
 3. Press 'r' to reset mask; 'k' to keep existing modifications; 's' to save results.
 4. Press space to perform inpainting; 'n' to move to next image; 'Esc' to quit demo. 
@@ -105,7 +105,7 @@ Download the model dirs and put it under `experiments/`
 ## TensorBoard
 Visualization on TensorBoard for training is supported. 
 
-Run `tensorboard --logdir [log_fold] --bind_all` and open browser to view training progress. 
+Run `tensorboard --logdir [log_folder] --bind_all` and open browser to view training progress. 
 
 
 
