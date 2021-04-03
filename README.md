@@ -8,7 +8,9 @@ AOT-GAN: Aggregated Contextual Transformations for High-Resolution Image Inpaint
 
 <!-- ------------------------------------------------ -->
 ## Citation
-If any part of our paper and code is helpful to your work, please generously cite with:
+If any part of our paper and code is helpful to your work, 
+please generously cite and star us :kissing_heart: :kissing_heart: :kissing_heart: !
+
 ```
 @inproceedings{yan2021agg,
   author = {Zeng, Yanhong and Fu, Jianlong and Chao, Hongyang and Guo, Baining},
@@ -59,6 +61,8 @@ conda activate inpainting
 <!-- --------------------------------- -->
 ## Datasets 
 
+1. download images and masks
+2. specify the path to training data by `--dir_image` and `--dir_mask`.
 
 
 
@@ -66,25 +70,35 @@ conda activate inpainting
 ## Getting Started
 
 1. Training:
-    * Prepare training images filelist [[our split]](https://drive.google.com/open?id=1_j51UEiZluWz07qTGtJ7Pbfeyp1-aZBg)
-    * Modify [celebahq.json](configs/celebahq.json) to set path to data, iterations, and other parameters.
     * Our codes are built upon distributed training with Pytorch.  
-    * Run `python train.py -c [config_file] -n [model_name] -m [mask_type] -s [image_size] `. 
-    * For example, `python train.py -c configs/celebahq.json -n pennet -m pconv -s 512 `
+    * Run `python train.py  `. 
 2. Resume training:
-    * Run `python train.py -n pennet -m pconv -s 512 `.
+    * Run `python train.py --resume `.
 3. Testing:
-    * Run `python test.py -c [config_file] -n [model_name] -m [mask_type] -s [image_size] `. 
-    * For example, `python test.py -c configs/celebahq.json -n pennet -m pconv -s 512 `
+    * Run `python test.py --pre_train [path to pretrained model] `. 
 4. Evaluating:
-    * Run `python eval.py -r [result_path]`
+    * Run `python eval.py --real_dir [ground truths] --fake_dir [inpainting results] --metric mae psnr ssim fid`
 
 <!-- ------------------------------------------------------------------- -->
 ## Pretrained models
-[CELEBA-HQ](https://drive.google.com/open?id=1d7JsTXxrF9vn-2abB63FQtnPJw6FpLm8) |
-[Places2](https://drive.google.com/open?id=19u5qfnp42o7ojSMeJhjnqbenTKx3i2TP) 
+[CELEBA-HQ](https://drive.google.com/drive/folders/1Zks5Hyb9WAEpupbTdBqsCafmb25yqsGJ?usp=sharing) |
+[Places2](https://drive.google.com/drive/folders/1bSOH-2nB3feFRyDEmiX81CEiWkghss3i?usp=sharing) 
 
 Download the model dirs and put it under `experiments/`
+
+
+<!-- ------------------------------------------------------------------- -->
+## Demo 
+
+1. Run by `python demo.py --dir_image [fold to images]  --pre_train [folder to model] --painter [bbox|freeform]`
+2. Press '+' or '-' to control the thickness of painter. 
+3. Press 'r' to reset mask; 'k' to keep existing modifications; 's' to save results.
+4. Press space to perform inpainting; 'n' to move to next image; 'Esc' to quit demo. 
+
+
+![face](https://github.com/researchmm/AOT-GAN-for-Inpainting/blob/master/docs/face.gif?raw=true)
+![logo](https://github.com/researchmm/AOT-GAN-for-Inpainting/blob/master/docs/logo.gif?raw=true)
+
 
 
 <!-- ------------------------ -->
@@ -94,5 +108,9 @@ Visualization on TensorBoard for training is supported.
 Run `tensorboard --logdir [log_fold] --bind_all` and open browser to view training progress. 
 
 
-### License
-Licensed under an MIT license.
+
+<!-- ------------------------ -->
+## Acknowledgements
+
+We would like to thank [edge-connect](https://github.com/knazeri/edge-connect), [EDSR_PyTorch](https://github.com/sanghyun-son/EDSR-PyTorch). 
+
