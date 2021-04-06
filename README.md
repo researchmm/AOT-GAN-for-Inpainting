@@ -1,6 +1,6 @@
 # AOT-GAN for High-Resolution Image Inpainting
 ![aotgan](https://github.com/researchmm/AOT-GAN-for-Inpainting/blob/master/docs/aotgan.PNG?raw=true)
-### [Arxiv Paper](https://github.com/researchmm/AOT-GAN-for-Inpainting) | 
+### [Arxiv Paper](https://arxiv.org/abs/2104.01431) | 
 
 AOT-GAN: Aggregated Contextual Transformations for High-Resolution Image Inpainting<br>
 [Yanhong Zeng](https://sites.google.com/view/1900zyh),  [Jianlong Fu](https://jianlong-fu.github.io/), [Hongyang Chao](https://scholar.google.com/citations?user=qnbpG6gAAAAJ&hl),  and [Baining Guo](https://www.microsoft.com/en-us/research/people/bainguo/).<br>
