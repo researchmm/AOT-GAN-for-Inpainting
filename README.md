@@ -71,13 +71,26 @@ conda activate inpainting
 
 1. Training:
     * Our codes are built upon distributed training with Pytorch.  
-    * Run `python train.py  `. 
+    * Run 
+    ```
+    cd src 
+    python train.py  
+    ```
 2. Resume training:
-    * Run `python train.py --resume `.
+    ```
+    cd src
+    python train.py --resume 
+    ```
 3. Testing:
-    * Run `python test.py --pre_train [path to pretrained model] `. 
+    ```
+    cd src 
+    python test.py --pre_train [path to pretrained model] 
+    ```
 4. Evaluating:
-    * Run `python eval.py --real_dir [ground truths] --fake_dir [inpainting results] --metric mae psnr ssim fid`
+    ```
+    cd src 
+    python eval.py --real_dir [ground truths] --fake_dir [inpainting results] --metric mae psnr ssim fid
+    ```
 
 <!-- ------------------------------------------------------------------- -->
 ## Pretrained models
@@ -90,10 +103,15 @@ Download the model dirs and put it under `experiments/`
 <!-- ------------------------------------------------------------------- -->
 ## Demo 
 
-1. Run by `python demo.py --dir_image [folder to images]  --pre_train [folder to model] --painter [bbox|freeform]`
-2. Press '+' or '-' to control the thickness of painter. 
-3. Press 'r' to reset mask; 'k' to keep existing modifications; 's' to save results.
-4. Press space to perform inpainting; 'n' to move to next image; 'Esc' to quit demo. 
+1. Download the pre-trained model parameters and put it under `experiments/`
+2. Run by 
+```
+cd src
+python demo.py --dir_image [folder to images]  --pre_train [path to pre_trained model] --painter [bbox|freeform]
+```
+3. Press '+' or '-' to control the thickness of painter. 
+4. Press 'r' to reset mask; 'k' to keep existing modifications; 's' to save results.
+5. Press space to perform inpainting; 'n' to move to next image; 'Esc' to quit demo. 
 
 
 ![face](https://github.com/researchmm/AOT-GAN-for-Inpainting/blob/master/docs/face.gif?raw=true)
