@@ -19,6 +19,9 @@ class Trainer():
         self.args = args 
         self.iteration = 0
 
+        # Detect anomalies
+        torch.autograd.set_detect_anomaly(True)
+
         # setup data set and data loader
         self.dataloader = create_loader(args)
 
