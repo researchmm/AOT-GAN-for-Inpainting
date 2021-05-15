@@ -157,7 +157,6 @@ class TerrainDataset(Dataset):
                 break
             else:
                 self.idx_offset += 1
-                print(f"Skipped block #{self.idx_offset}")
         return target, mask, file_name
 
     def __internal_getitem__(self, idx):
