@@ -12,7 +12,7 @@ class InpaintGenerator(BaseNetwork):
 
         self.encoder = nn.Sequential(
             nn.ReflectionPad2d(3),
-            nn.Conv2d(4, 64, 7),
+            nn.Conv2d(2, 64, 7),
             nn.ReLU(True),
             nn.Conv2d(64, 128, 4, stride=2, padding=1),
             nn.ReLU(True),
@@ -27,7 +27,7 @@ class InpaintGenerator(BaseNetwork):
             nn.ReLU(True),
             UpConv(128, 64),
             nn.ReLU(True),
-            nn.Conv2d(64, 3, 3, stride=1, padding=1)
+            nn.Conv2d(64, 1, 3, stride=1, padding=1)
         )
 
         self.init_weights()
@@ -92,7 +92,7 @@ def my_layer_norm(feat):
 class Discriminator(BaseNetwork):
     def __init__(self, ):
         super(Discriminator, self).__init__()
-        inc = 3
+        inc = 1
         self.conv = nn.Sequential(
             spectral_norm(nn.Conv2d(inc, 64, 4, stride=2, padding=1, bias=False)),
             nn.LeakyReLU(0.2, inplace=True),
