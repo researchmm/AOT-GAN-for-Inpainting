@@ -272,7 +272,7 @@ class TerrainDataset(Dataset):
         # * Randomize
         if self.randomize:
             np.random.seed(self.random_state)
-            blocks = np.random.shuffle(blocks)
+            np.random.shuffle(blocks)
 
         # * Remove blocks that contain nans
         mask = ~np.isnan(blocks).any(axis=1).any(axis=1)
