@@ -11,7 +11,7 @@ def sample_data(loader):
 
 def create_loader(args):
     dataset = TerrainDataset(
-        "data/download/MDRS/data/*.tif",
+        args.dir_train,
         dataset_type="train",
         randomize=True,
         block_variance=1,

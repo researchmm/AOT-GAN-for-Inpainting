@@ -3,6 +3,8 @@ import argparse
 parser = argparse.ArgumentParser(description='Image Inpainting')
 
 # data specifications 
+parser.add_argument('--dir_train', type=str, default='data/download/*/data/*.tif',
+                    help='train dataset directory')
 parser.add_argument('--data_train', type=str, default='tds',
                     help='dataname used for training')
 parser.add_argument('--data_test', type=str, default='tds',
