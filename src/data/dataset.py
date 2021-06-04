@@ -30,10 +30,10 @@ class InpaintingData(Dataset):
             transforms.ColorJitter(0.05, 0.05, 0.05, 0.05),
             transforms.ToTensor()])
         self.mask_trans = transforms.Compose([
-            transforms.Resize(args.image_size, interpolation=transforms.InterpolationMode.NEAREST),
+            transforms.Resize(args.image_size),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(
-                (0, 45), interpolation=transforms.InterpolationMode.NEAREST),
+                (0, 45)),
         ])
 
         
