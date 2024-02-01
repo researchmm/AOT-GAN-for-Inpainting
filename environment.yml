@@ -5,55 +5,47 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1=main
   - blas=1.0=mkl
-  - bzip2=1.0.8=h7b6447c_0
-  - ca-certificates=2021.1.19=h06a4308_1
-  - certifi=2020.12.5=py38h06a4308_0
-  - cudatoolkit=10.2.89=hfd86e86_1
-  - ffmpeg=4.3=hf484d3e_0
-  - freetype=2.10.4=h5ab3b9f_0
-  - gmp=6.2.1=h2531618_2
-  - gnutls=3.6.5=h71b1129_1002
+  - bzip2=1.0.8                                     
+  - ca-certificates=2021.1.19                                     
+  - certifi=2020.12.5                                     
+  - cudatoolkit=10.2.89                                     
+  - ffmpeg=4.3                                     
+  - freetype=2.10.4                                                                                                  
   - intel-openmp=2020.2=254
-  - jpeg=9b=h024ee3a_2
-  - lame=3.100=h7b6447c_0
-  - lcms2=2.11=h396b838_0
-  - ld_impl_linux-64=2.33.1=h53a641e_7
-  - libffi=3.3=he6710b0_2
-  - libgcc-ng=9.1.0=hdf63c60_0
-  - libiconv=1.15=h63c8f33_5
-  - libpng=1.6.37=hbc83047_0
-  - libstdcxx-ng=9.1.0=hdf63c60_0
-  - libtiff=4.1.0=h2733197_1
-  - libuv=1.40.0=h7b6447c_0
-  - lz4-c=1.9.3=h2531618_0
+  - jpeg=9b                                     
+  - lame=3.100                                     
+  - lcms2=2.11                                                                     
+  - libffi=3.3                                                                      
+  - libiconv=1.15                                     
+  - libpng=1.6.37                                                                      
+  - libtiff=4.1.0                                     
+  - libuv=1.40.0                                     
+  - lz4-c=1.9.3                                     
   - mkl=2020.2=256
-  - mkl-service=2.3.0=py38he904b0f_0
-  - mkl_fft=1.3.0=py38h54f3939_0
-  - mkl_random=1.1.1=py38h0573a6f_0
-  - ncurses=6.2=he6710b0_1
-  - nettle=3.4.1=hbb512f6_0
-  - ninja=1.10.2=py38hff7bd54_0
-  - numpy=1.19.2=py38h54aff64_0
-  - numpy-base=1.19.2=py38hfa32c7d_0
-  - olefile=0.46=py_0
-  - openh264=2.1.0=hd408876_0
-  - openssl=1.1.1k=h27cfd23_0
-  - pillow=8.1.2=py38he98fc37_0
-  - pip=21.0.1=py38h06a4308_0
-  - python=3.8.8=hdb3f193_4
-  - pytorch=1.8.1=py3.8_cuda10.2_cudnn7.6.5_0
-  - readline=8.1=h27cfd23_0
-  - setuptools=52.0.0=py38h06a4308_0
-  - six=1.15.0=py38h06a4308_0
-  - sqlite=3.35.3=hdfb4753_0
-  - tk=8.6.10=hbc83047_0
+  - mkl-service=2.3.0                                     
+  - mkl_fft=1.3.0                                    
+  - mkl_random=1.1.1                                                                                                        
+  - ninja=1.10.2                                     
+  - numpy=1.19.2                                     
+  - numpy-base=1.19.2                                    
+  - olefile=0.46=py_0                                  
+  - openssl=1.1.1k                                     
+  - pillow=8.1.2                                    
+  - pip=21.0.1                                     
+  - python=3.8.8                                     
+  - pytorch=1.8.1                                                                      
+  - setuptools=52.0.0                                     
+  - six=1.15.0                                     
+  - sqlite=3.35.3                                     
+  - tk=8.6.10                                     
   - torchaudio=0.8.1=py38
   - torchvision=0.9.1=py38_cu102
-  - typing_extensions=3.7.4.3=pyha847dfd_0
-  - wheel=0.36.2=pyhd3eb1b0_0
-  - xz=5.2.5=h7b6447c_0
-  - zlib=1.2.11=h7b6447c_3
-  - zstd=1.4.9=haebb681_0
+  - typing_extensions=3.7.4.3                                     
+  - wheel=0.36.2                                     
+  - xz=5.2.5                                     
+  - zlib=1.2.11                                     
+  - zstd=1.4.9  
+                                     
   - pip:
     - absl-py==0.12.0
     - attrdict==2.0.1
@@ -88,4 +80,4 @@ dependencies:
     - tifffile==2021.3.31
     - tqdm==4.59.0
     - urllib3==1.26.4
-    - werkzeug==1.0.1
+    - werkzeug==1.0.1 
