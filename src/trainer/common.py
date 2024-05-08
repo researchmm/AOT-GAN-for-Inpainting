@@ -1,11 +1,8 @@
-import time
-import numpy as np
-
 import torch
 from torch import distributed as dist
 
 
-class timer():
+class timer:
     def __init__(self):
         self.acc = 0
         self.t0 = torch.cuda.Event(enable_timing=True)
@@ -18,8 +15,9 @@ class timer():
     def toc(self, restart=False):
         self.t1.record()
         torch.cuda.synchronize()
-        diff = self.t0.elapsed_time(self.t1) /1000.
-        if restart: self.tic()
+        diff = self.t0.elapsed_time(self.t1) / 1000.0
+        if restart:
+            self.tic()
         return diff
 
     def hold(self):
@@ -53,6 +51,5 @@ def reduce_loss_dict(loss_dict, world_size):
         if dist.get_rank() == 0:
             losses /= world_size
 
-        reduced_losses = {k: v for k, v in zip(keys, losses)}
+        reduced_losses = dict(zip(keys, losses))
     return reduced_losses
-            

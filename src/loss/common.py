@@ -1,7 +1,10 @@
-import torch 
-import torch.nn as nn 
+import cv2
+import numpy as np
+import torch
+import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
+from PIL import Image
 from torch.nn.functional import conv2d
 
 
@@ -18,14 +21,27 @@ class VGG19(nn.Module):
         names = list(zip(prefix, posfix))
         self.relus = []
         for pre, pos in names:
-            self.relus.append('relu{}_{}'.format(pre, pos))
-            self.__setattr__('relu{}_{}'.format(
-                pre, pos), torch.nn.Sequential())
+            self.relus.append("relu{}_{}".format(pre, pos))
+            self.__setattr__("relu{}_{}".format(pre, pos), torch.nn.Sequential())
 
-        nums = [[0, 1], [2, 3], [4, 5, 6], [7, 8],
-                [9, 10, 11], [12, 13], [14, 15], [16, 17],
-                [18, 19, 20], [21, 22], [23, 24], [25, 26],
-                [27, 28, 29], [30, 31], [32, 33], [34, 35]]
+        nums = [
+            [0, 1],
+            [2, 3],
+            [4, 5, 6],
+            [7, 8],
+            [9, 10, 11],
+            [12, 13],
+            [14, 15],
+            [16, 17],
+            [18, 19, 20],
+            [21, 22],
+            [23, 24],
+            [25, 26],
+            [27, 28, 29],
+            [30, 31],
+            [32, 33],
+            [34, 35],
+        ]
 
         for i, layer in enumerate(self.relus):
             for num in nums[i]:
@@ -40,21 +56,20 @@ class VGG19(nn.Module):
         x = (x + 1.0) / 2.0
         x = (x - self.mean.view(1, 3, 1, 1)) / (self.std.view(1, 3, 1, 1))
         if self.resize_input:
-            x = F.interpolate(
-                x, size=(256, 256), mode='bilinear', align_corners=True)
+            x = F.interpolate(x, size=(256, 256), mode="bilinear", align_corners=True)
         features = []
         for layer in self.relus:
             x = self.__getattr__(layer)(x)
             features.append(x)
-        out = {key: value for (key, value) in list(zip(self.relus, features))}
+        out = dict(zip(self.relus, features))
         return out
 
 
 def gaussian(window_size, sigma):
     def gauss_fcn(x):
-        return -(x - window_size // 2)**2 / float(2 * sigma**2)
-    gauss = torch.stack([torch.exp(torch.tensor(gauss_fcn(x)))
-                         for x in range(window_size)])
+        return -((x - window_size // 2) ** 2) / float(2 * sigma**2)
+
+    gauss = torch.stack([torch.exp(torch.tensor(gauss_fcn(x))) for x in range(window_size)])
     return gauss / gauss.sum()
 
 
@@ -75,8 +90,7 @@ def get_gaussian_kernel(kernel_size: int, sigma: float) -> torch.Tensor:
       tensor([0.1201, 0.2339, 0.2921, 0.2339, 0.1201])
     """
     if not isinstance(kernel_size, int) or kernel_size % 2 == 0 or kernel_size <= 0:
-        raise TypeError(
-            "kernel_size must be an odd positive integer. Got {}".format(kernel_size))
+        raise TypeError("kernel_size must be an odd positive integer. Got {}".format(kernel_size))
     window_1d: torch.Tensor = gaussian(kernel_size, sigma)
     return window_1d
 
@@ -106,24 +120,21 @@ def get_gaussian_kernel2d(kernel_size, sigma):
               [0.0370, 0.0720, 0.0899, 0.0720, 0.0370]])
     """
     if not isinstance(kernel_size, tuple) or len(kernel_size) != 2:
-        raise TypeError(
-            "kernel_size must be a tuple of length two. Got {}".format(kernel_size))
+        raise TypeError("kernel_size must be a tuple of length two. Got {}".format(kernel_size))
     if not isinstance(sigma, tuple) or len(sigma) != 2:
-        raise TypeError(
-            "sigma must be a tuple of length two. Got {}".format(sigma))
+        raise TypeError("sigma must be a tuple of length two. Got {}".format(sigma))
     ksize_x, ksize_y = kernel_size
     sigma_x, sigma_y = sigma
     kernel_x: torch.Tensor = get_gaussian_kernel(ksize_x, sigma_x)
     kernel_y: torch.Tensor = get_gaussian_kernel(ksize_y, sigma_y)
-    kernel_2d: torch.Tensor = torch.matmul(
-        kernel_x.unsqueeze(-1), kernel_y.unsqueeze(-1).t())
+    kernel_2d: torch.Tensor = torch.matmul(kernel_x.unsqueeze(-1), kernel_y.unsqueeze(-1).t())
     return kernel_2d
 
 
 class GaussianBlur(nn.Module):
     r"""Creates an operator that blurs a tensor using a Gaussian filter.
     The operator smooths the given tensor with a gaussian kernel by convolving
-    it to each channel. It suports batched operation.
+    it to each channel. It supports batched operation.
     Arguments:
       kernel_size (Tuple[int, int]): the size of the kernel.
       sigma (Tuple[float, float]): the standard deviation of the kernel.
@@ -154,11 +165,9 @@ class GaussianBlur(nn.Module):
 
     def forward(self, x):  # type: ignore
         if not torch.is_tensor(x):
-            raise TypeError(
-                "Input x type is not a torch.Tensor. Got {}".format(type(x)))
+            raise TypeError("Input x type is not a torch.Tensor. Got {}".format(type(x)))
         if not len(x.shape) == 4:
-            raise ValueError(
-                "Invalid input shape, we expect BxCxHxW. Got: {}".format(x.shape))
+            raise ValueError("Invalid input shape, we expect BxCxHxW. Got: {}".format(x.shape))
         # prepare kernel
         b, c, h, w = x.shape
         tmp_kernel: torch.Tensor = self.kernel.to(x.device).to(x.dtype)
@@ -174,6 +183,7 @@ class GaussianBlur(nn.Module):
 # functional interface
 ######################
 
+
 def gaussian_blur(input, kernel_size, sigma):
     r"""Function that blurs a tensor using a Gaussian filter.
     See :class:`~kornia.filters.GaussianBlur` for details.
@@ -181,15 +191,15 @@ def gaussian_blur(input, kernel_size, sigma):
     return GaussianBlur(kernel_size, sigma)(input)
 
 
-if __name__ == '__main__':
-    img = Image.open('test.png').convert('L')
+if __name__ == "__main__":
+    img = Image.open("test.png").convert("L")
     tensor_img = F.to_tensor(img).unsqueeze(0).float()
-    print('tensor_img size: ', tensor_img.size())
+    print("tensor_img size: ", tensor_img.size())
 
     blurred_img = gaussian_blur(tensor_img, (61, 61), (10, 10))
     print(torch.min(blurred_img), torch.max(blurred_img))
 
-    blurred_img = blurred_img*255
+    blurred_img = blurred_img * 255
     img = blurred_img.int().numpy().astype(np.uint8)[0][0]
     print(img.shape, np.min(img), np.max(img), np.unique(img))
-    cv2.imwrite('gaussian.png', img)
+    cv2.imwrite("gaussian.png", img)

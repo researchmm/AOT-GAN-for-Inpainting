@@ -1,6 +1,6 @@
 __pycache__
-*.pt 
-*.txt 
+*.pt
+*.txt
 *.png
-events.* 
+events.*
 outputs

@@ -5,11 +5,12 @@ import torch.nn.functional as F
 from .common import VGG19, gaussian_blur
 
 
-
-class L1(): 
-    def __init__(self,):
+class L1:
+    def __init__(
+        self,
+    ):
         self.calc = torch.nn.L1Loss()
-    
+
     def __call__(self, x, y):
         return self.calc(x, y)
 
@@ -26,8 +27,7 @@ class Perceptual(nn.Module):
         content_loss = 0.0
         prefix = [1, 2, 3, 4, 5]
         for i in range(5):
-            content_loss += self.weights[i] * self.criterion(
-                x_vgg[f'relu{prefix[i]}_1'], y_vgg[f'relu{prefix[i]}_1'])
+            content_loss += self.weights[i] * self.criterion(x_vgg[f"relu{prefix[i]}_1"], y_vgg[f"relu{prefix[i]}_1"])
         return content_loss
 
 
@@ -51,14 +51,17 @@ class Style(nn.Module):
         posfix = [2, 4, 4, 2]
         for pre, pos in list(zip(prefix, posfix)):
             style_loss += self.criterion(
-                self.compute_gram(x_vgg[f'relu{pre}_{pos}']), self.compute_gram(y_vgg[f'relu{pre}_{pos}']))
+                self.compute_gram(x_vgg[f"relu{pre}_{pos}"]), self.compute_gram(y_vgg[f"relu{pre}_{pos}"])
+            )
         return style_loss
 
 
-class nsgan(): 
-    def __init__(self, ):
+class nsgan:
+    def __init__(
+        self,
+    ):
         self.loss_fn = torch.nn.Softplus()
-    
+
     def __call__(self, netD, fake, real):
         fake_detach = fake.detach()
         d_fake = netD(fake_detach)
@@ -67,30 +70,30 @@ class nsgan():
 
         g_fake = netD(fake)
         gen_loss = self.loss_fn(-g_fake).mean()
-        
+
         return dis_loss, gen_loss
 
 
-class smgan():
-    def __init__(self, ksize=71): 
+class smgan:
+    def __init__(self, ksize=71):
         self.ksize = ksize
         self.loss_fn = nn.MSELoss()
-    
-    def __call__(self, netD, fake, real, masks): 
+
+    def __call__(self, netD, fake, real, masks):
         fake_detach = fake.detach()
 
         g_fake = netD(fake)
-        d_fake  = netD(fake_detach)
+        d_fake = netD(fake_detach)
         d_real = netD(real)
 
         _, _, h, w = g_fake.size()
         b, c, ht, wt = masks.size()
-        
+
         # Handle inconsistent size between outputs and masks
         if h != ht or w != wt:
-            g_fake = F.interpolate(g_fake, size=(ht, wt), mode='bilinear', align_corners=True)
-            d_fake = F.interpolate(d_fake, size=(ht, wt), mode='bilinear', align_corners=True)
-            d_real = F.interpolate(d_real, size=(ht, wt), mode='bilinear', align_corners=True)
+            g_fake = F.interpolate(g_fake, size=(ht, wt), mode="bilinear", align_corners=True)
+            d_fake = F.interpolate(d_fake, size=(ht, wt), mode="bilinear", align_corners=True)
+            d_real = F.interpolate(d_real, size=(ht, wt), mode="bilinear", align_corners=True)
         d_fake_label = gaussian_blur(masks, (self.ksize, self.ksize), (10, 10)).detach().cuda()
         d_real_label = torch.zeros_like(d_real).cuda()
         g_fake_label = torch.ones_like(g_fake).cuda()
@@ -99,6 +102,3 @@ class smgan():
         gen_loss = self.loss_fn(g_fake, g_fake_label) * masks / torch.mean(masks)
 
         return dis_loss.mean(), gen_loss.mean()
-        
-
-

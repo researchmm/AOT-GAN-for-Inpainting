@@ -1,9 +1,11 @@
-
+import io
 import zipfile
+
+from PIL import Image
 
 
 class ZipReader(object):
-    file_dict = dict()
+    file_dict = {}
 
     def __init__(self):
         super(ZipReader, self).__init__()
@@ -14,7 +16,7 @@ class ZipReader(object):
         if path in file_dict:
             return file_dict[path]
         else:
-            file_handle = zipfile.ZipFile(path, mode='r', allowZip64=True)
+            file_handle = zipfile.ZipFile(path, mode="r", allowZip64=True)
             file_dict[path] = file_handle
             return file_dict[path]
 
@@ -24,5 +26,3 @@ class ZipReader(object):
         data = zfile.read(image_name)
         im = Image.open(io.BytesIO(data))
         return im
-
-
